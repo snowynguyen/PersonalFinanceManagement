@@ -3,19 +3,6 @@ package src;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-class TransactionCategory {
-    long id;
-    String name;
-}
-
-class Account {
-    
-}
-
-class TransactingEntity {
-
-}
-
 public class Transaction {
     static Random __rng = new Random(73575334);
     static long __generateNewID() {
