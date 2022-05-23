@@ -13,11 +13,12 @@ public class Transaction {
 
     long id;
     LocalDateTime time;
-    long origin_account_id, destination_account_id;
+    long account_id;
     String detail, note;
     double amount;
     long category_id;
-    boolean isFuturePayable, isFutureReceivable;
+    boolean is_future_reversible;
+    LocalDateTime due_reversal;
 
     Transaction() {
         this.id = __generateNewID();
