@@ -31,14 +31,13 @@ public class Controller {
     
 
     static final String MAKE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS CATEGORIES (\n" +
-        "ID INTEGER PRIMARY KEY,\n" + 
+        "id INTEGER PRIMARY KEY,\n" + 
         "name VARCHAR(1024)\n" +
         ");";
 
     static final String MAKE_ACCOUNT_TABLE = "CREATE TABLE IF NOT EXISTS ACCOUNTS (\n" +
-        "ID INTEGER PRIMARY KEY,\n" + 
+        "id INTEGER PRIMARY KEY,\n" + 
         "name VARCHAR(1024),\n" +
-        "balance FLOAT,\n" +
         "created TEXT,\n" +
         "last_update TEXT,\n" +
         "note VARCHAR(1024)\n" +
@@ -130,6 +129,37 @@ public class Controller {
         readAccountsFromDB();
         readTransactionsFromDB();
     }
+
+    void saveNewTransaction(Transaction transaction) {
+        String sql = "INSERT INTO TRANSACTIONS(id, time, account_id, detail, note, amount, category_id, is_future_reversible, due_reversal) VALUE (%d, %s, %d, %s, %s, %f ,%d, %d, %s)"; 
+        sql = String.format(sql, transaction.id, transaction.time.toString(), transaction.account_id, transaction.detail, transaction.note, transaction.amount, transaction.category_id, transaction.is_future_reversible, transaction.due_reversal);
+        executeSQLquery(sql);
+    }
+
+    void saveNewTransactionCategory(TransactionCategory category) {
+        executeSQLquery(String.format("INSERT INTO CATEGORIES(id, name) VALUE %d %s", category.id, category.name));
+    }
+
+    void saveNewAccount(Account account) {
+        String sql = "INSERT INTO ACCOUNTS(id, name, created, last_update, note) VALUE(%d, %s, %s, %s, %s)";
+        sql = String.format(sql, account.id, account.name, account.created.toString(), account.last_update.toString(), account.note);
+        executeSQLquery(sql);
+    }
+
+    void renameTransactionCategory(TransactionCategory modified_category) {
+        String sql = "UPDATE CATEGORIES SET name = %s WHERE id = %d";
+        sql = String.format(sql, modified_category.name, modified_category.id);
+        executeSQLquery(sql);
+    }
+
+    void updateAccountInfo(Account modified_account) {
+        String sql = "UPDATE ACCOUNTS SET name = %s, note = %s WHERE id = %d";
+        sql = String.format(sql, modified_account.name, modified_account.note, modified_account.id);
+        executeSQLquery(sql);
+    }
+
+    // TODO: write update Transaction info
+    // TODO: update last_update for account
 
     Controller() {
         initDBfile();

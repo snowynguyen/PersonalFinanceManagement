@@ -22,5 +22,13 @@ public class Transaction {
 
     Transaction() {
         this.id = __generateNewID();
+        this.time = LocalDateTime.MIN;
+        this.account_id = 0;
+        this.detail = "";
+        this.note = "";
+        this.amount = 0.0;
+        this.category_id = 0;
+        this.is_future_reversible = false;
+        this.due_reversal = LocalDateTime.MAX;
     }
 }
