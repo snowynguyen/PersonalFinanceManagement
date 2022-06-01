@@ -10,18 +10,12 @@ public class Account {
     private LocalDateTime last_update;
     private String note;
 
-    public Account () {
-        this.created = LocalDateTime.now();
-        this.last_update = LocalDateTime.now();
-    }
-    
     public long getId() {
         return this.id;
     }
 
     public void setId(long id) {
         this.id = id;
-        this.last_update = LocalDateTime.now();
     }
 
     public String getName() {
@@ -30,7 +24,6 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
-        this.last_update = LocalDateTime.now();
     }
 
     public double getBalance() {
@@ -39,7 +32,6 @@ public class Account {
 
     public void setBalance(double balance) {
         this.balance = balance;
-        this.last_update = LocalDateTime.now();
     }
 
     public LocalDateTime getCreated() {
@@ -48,11 +40,14 @@ public class Account {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
-        this.last_update = LocalDateTime.now();
     }
 
     public LocalDateTime getLast_update() {
         return this.last_update;
+    }
+
+    public void setLast_update(LocalDateTime last_update) {
+        this.last_update = last_update;
     }
 
     public String getNote() {
@@ -61,7 +56,10 @@ public class Account {
 
     public void setNote(String note) {
         this.note = note;
-        this.last_update = LocalDateTime.now();
     }
 
+    public Account () {
+        this.created = LocalDateTime.now();
+        this.last_update = LocalDateTime.now();
+    }
 }

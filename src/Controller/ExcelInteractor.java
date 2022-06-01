@@ -36,95 +36,94 @@ public class ExcelInteractor {
 
     public GenericTable<Transaction> readTransactionExcel(String file) {
         GenericTable<Transaction> table = new GenericTable<>();
+        try {
+            // Get file
+            InputStream inputStream = new FileInputStream(new File(file));
         
-    
-        // Get file
-        InputStream inputStream = new FileInputStream(new File(file));
-    
-        // Get workbook
-        Workbook workbook = getWorkbook(inputStream, file);
-    
-        // Get sheet
-        Sheet sheet = workbook.getSheetAt(0);
-    
-        // Get all rows
-        Iterator<Row> iterator = sheet.iterator();
-        while (iterator.hasNext()) {
-            Row nextRow = iterator.next();
-            if (nextRow.getRowNum() == 0) {
-                // Ignore header
-                continue;
-            }
-    
-            // Get all cells
-            Iterator<Cell> cellIterator = nextRow.cellIterator();
-    
-            // Read cells and set value for book object
-            Transaction transaction = new Transaction();
-            while (cellIterator.hasNext()) {
-                //Read cell
-                Cell cell = cellIterator.next();
-                Object cellValue = getCellValue(cell);
-                if (cellValue == null || cellValue.toString().isEmpty()) {
+            // Get workbook
+            Workbook workbook = getWorkbook(inputStream, file);
+        
+            // Get sheet
+            Sheet sheet = workbook.getSheetAt(0);
+        
+            // Get all rows
+            Iterator<Row> iterator = sheet.iterator();
+            while (iterator.hasNext()) {
+                Row nextRow = iterator.next();
+                if (nextRow.getRowNum() == 0) {
+                    // Ignore header
                     continue;
                 }
-                // Set value for book object
-                int columnIndex = cell.getColumnIndex();
-                switch (columnIndex) {
-                    case Constants.COLUMN_INDEX_ID:
-                        transaction.setId(new BigDecimal((double) cellValue).intValue());
-                        break;
-                    case Constants.COLUMN_INDEX_TIME:
-                        transaction.setTime(LocalDateTime.parse(getCellValue(cell).toString()));
-                        break;
-                    case Constants.COLUMN_INDEX_ACCOUNT:
-                        String account_name = cellValue.toString();
-                        ResultSet rs = Controller.executeSQLquery("SELECT id FROM ACCOUNTS WHERE name = " + account_name + ";");
-                        if (rs.isAfterLast()) {
-                            System.err.println(String.format("Account named '%s' was not found, creating new account to DB.", account_name));
-                            Account new_account = new Account();
-                            new_account.setName(account_name);
-                            Controller.saveNewAccount(new_account);
-                        }
-                        rs = Controller.executeSQLquery("SELECT id FROM ACCOUNTS WHERE name = " + account_name + ";");
-                        if (!rs.first()) {
-                            System.err.println("Invalid ResultSet state ExcelInteractor/readTransactionExcel/caseAccount.");
-                        }
-                        long account_id = rs.getLong("id");
-                        transaction.setAccount_id(account_id);
-                        break;
-                    case Constants.COLUMN_INDEX_DETAIL:
-                        transaction.setDetail(cellValue.toString());
-                        break;
-                    case Constants.COLUMN_INDEX_CATEGORY:
-                        String category_name = cellValue.toString();
-                        ResultSet rsc = Controller.executeSQLquery("SELECT id FROM CATEGORIES WHERE name = " + category_name + ";");
-                        if (rsc.isAfterLast()) {
-                            System.err.println(String.format("Account named '%s' was not found, creating new account to DB.", account_name));
-                            TransactionCategory category = new TransactionCategory();
-                            category.setName(category_name);
-                            Controller.saveNewTransactionCategory(category);
-                        }
-                        rsc = Controller.executeSQLquery("SELECT id FROM CATEGORIES WHERE name = " + category_name + ";");
-                        if (!rs.first()) {
-                            System.err.println("Invalid ResultSet state ExcelInteractor/readTransactionExcel/caseCategory.");
-                        } 
-                        long category_id = rs.getLong("id");
-                        transaction.setCategory_id(category_id);
-                        break;
-                    case Constants.COLUMN_INDEX_AMOUNT:
-                        transaction.setAmount(new BigDecimal((double) cellValue).doubleValue());
-                    default:
-                        break;
+        
+                // Get all cells
+                Iterator<Cell> cellIterator = nextRow.cellIterator();
+        
+                // Read cells and set value for book object
+                Transaction transaction = new Transaction();
+                while (cellIterator.hasNext()) {
+                    //Read cell
+                    Cell cell = cellIterator.next();
+                    Object cellValue = getCellValue(cell);
+                    if (cellValue == null || cellValue.toString().isEmpty()) {
+                        continue;
+                    }
+                    // Set value for book object
+                    int columnIndex = cell.getColumnIndex();
+                    switch (columnIndex) {
+                        case Constants.COLUMN_INDEX_ID:
+                            transaction.setId(new BigDecimal((double) cellValue).intValue());
+                            break;
+                        case Constants.COLUMN_INDEX_TIME:
+                            transaction.setTime(LocalDateTime.parse(getCellValue(cell).toString()));
+                            break;
+                        case Constants.COLUMN_INDEX_ACCOUNT:
+                            String account_name = cellValue.toString();
+                            ResultSet rs = Controller.executeSQLquery("SELECT id FROM ACCOUNTS WHERE name = " + account_name + ";");
+                            if (rs.isAfterLast()) {
+                                System.err.println(String.format("Account named '%s' was not found, creating new account to DB.", account_name));
+                                Account new_account = new Account();
+                                new_account.setName(account_name);
+                                Controller.saveNewAccount(new_account);
+                            }
+                            rs = Controller.executeSQLquery("SELECT id FROM ACCOUNTS WHERE name = " + account_name + ";");
+                            if (!rs.first()) {
+                                System.err.println("Invalid ResultSet state ExcelInteractor/readTransactionExcel/caseAccount.");
+                            }
+                            long account_id = rs.getLong("id");
+                            transaction.setAccount_id(account_id);
+                            break;
+                        case Constants.COLUMN_INDEX_DETAIL:
+                            transaction.setDetail(cellValue.toString());
+                            break;
+                        case Constants.COLUMN_INDEX_CATEGORY:
+                            String category_name = cellValue.toString();
+                            ResultSet rsc = Controller.executeSQLquery("SELECT id FROM CATEGORIES WHERE name = " + category_name + ";");
+                            if (rsc.isAfterLast()) {
+                                System.err.println(String.format("Account named '%s' was not found, creating new account to DB.", category_name));
+                                TransactionCategory category = new TransactionCategory();
+                                category.setName(category_name);
+                                Controller.saveNewTransactionCategory(category);
+                            }
+                            rsc = Controller.executeSQLquery("SELECT id FROM CATEGORIES WHERE name = " + category_name + ";");
+                            if (!rsc.first()) {
+                                System.err.println("Invalid ResultSet state ExcelInteractor/readTransactionExcel/caseCategory.");
+                            } 
+                            long category_id = rsc.getLong("id");
+                            transaction.setCategory_id(category_id);
+                            break;
+                        case Constants.COLUMN_INDEX_AMOUNT:
+                            transaction.setAmount(new BigDecimal((double) cellValue).doubleValue());
+                        default:
+                            break;
+                    }
                 }
-    
+                table.add(transaction);
             }
-            listBooks.add(book);
+            workbook.close();
+            inputStream.close();
+        } catch (Exception e) {
+            System.err.println(e.toString());
         }
-    
-        workbook.close();
-        inputStream.close();
-    
         return table;
     }
 

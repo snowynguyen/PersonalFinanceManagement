@@ -209,9 +209,8 @@ public class Controller {
     }
 
     void importTransactionExcel(String path) {
-        ExcelInteractor<GenericTable<Transaction> > table = new ExcelInteractor<>();
-
-        readTransactionsFromDB();
+        ExcelInteractor interactor = new ExcelInteractor();
+        interactor.readTransactionExcel(path);
     }
 
     // TODO: write update Transaction info

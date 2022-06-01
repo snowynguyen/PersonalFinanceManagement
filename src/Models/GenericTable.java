@@ -1,10 +1,10 @@
 package src.Models;
 
 import javax.swing.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class GenericTable<T> extends JTable{
+public class GenericTable<T> extends JTable implements Iterable<T>{
     private ArrayList<T> items;
 
     public ArrayList<T> getItems() {
@@ -17,6 +17,16 @@ public class GenericTable<T> extends JTable{
 
     public void add(T item) {
         this.items.add(item);
+    }
+
+    public Iterator<T> iterator() {
+        return items.iterator();
+    }
+
+    public void merge(GenericTable<T> rhs) {
+        for (T item : rhs) {
+            this.add(item);
+        }
     }
 
 }
