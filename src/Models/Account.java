@@ -2,13 +2,23 @@ package src.Models;
 
 import java.time.LocalDateTime;
 
-public class Account {
+public class Account implements IndexableClass{
     private long id;
     private String name;
-    private double balance;
     private LocalDateTime created;
     private LocalDateTime last_update;
     private String note;
+
+    public Object getValue(int index) {
+        switch (index) {
+            case 0: return id;
+            case 1: return name;
+            case 2: return created;
+            case 3: return last_update;
+            case 4: return note;
+        }
+        return null;
+    }
 
     public long getId() {
         return this.id;
@@ -24,14 +34,6 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getBalance() {
-        return this.balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     public LocalDateTime getCreated() {

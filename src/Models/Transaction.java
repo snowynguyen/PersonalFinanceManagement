@@ -3,7 +3,7 @@ package src.Models;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-public class Transaction {
+public class Transaction implements IndexableClass{
     static Random __rng = new Random(73575334);
     static long __generateNewID() {
         // TODO: Check for duplicate. 
@@ -19,6 +19,21 @@ public class Transaction {
     private long category_id;
     private boolean is_future_reversible;
     private LocalDateTime due_reversal;
+
+    public Object getValue(int index) {
+        switch (index) {
+            case 0: return id;
+            case 1: return time;
+            case 2: return account_id;
+            case 3: return detail;
+            case 4: return note;
+            case 5: return amount;
+            case 6: return category_id;
+            case 7: return is_future_reversible;
+            case 8: return due_reversal;
+        }
+        return null;
+    }
 
     public long getId() {
         return this.id;
