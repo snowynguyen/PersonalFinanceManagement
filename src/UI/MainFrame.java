@@ -1,16 +1,10 @@
 package src.UI;
 
-import src.Models.*;
 import src.Constants;
-import src.Main;
 import src.Controller.Controller;
-import src.UI.UiHelper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 final class UIHelper {
     private UIHelper() {
