@@ -34,9 +34,9 @@ public class MainFrame extends JFrame{
         JPanel mainPanel = UiHelper.createPanel(
                 new BorderLayout(), Constants.COMPONENT_PADDING, Constants.COMPONENT_PADDING, Constants.COMPONENT_PADDING, 0);
         
-        mainPanel.add(new JScrollPane(Controller.getTransactionsTable()), BorderLayout.CENTER);
+        //mainPanel.add(new JScrollPane(Controller.getTransactionsTable()), BorderLayout.CENTER);
         
-        //mainPanel.add(new JScrollPane(new JTable((new String[][]{{"A", "B"},{"C", "D"}}), (new String[]{"A", "B"}))), BorderLayout.CENTER);
+        mainPanel.add(new JScrollPane(new JTable((new String[][]{{"A", "B"},{"C", "D"}}), (new String[]{"A", "B"}))), BorderLayout.CENTER);
         
         return mainPanel;
         

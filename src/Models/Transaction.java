@@ -20,6 +20,8 @@ public class Transaction implements IndexableClass{
     private boolean is_future_reversible;
     private LocalDateTime due_reversal;
 
+    private static final String[] __colnames = {"ID", "Time", "Account ID", "Detail", "Note", "Amount", "Category", "Is Future reversible?", "Future Reversal"};
+
     public Object getValue(int index) {
         switch (index) {
             case 0: return id;
@@ -117,5 +119,13 @@ public class Transaction implements IndexableClass{
         this.category_id = 0;
         this.is_future_reversible = false;
         this.due_reversal = LocalDateTime.MAX;
+    }
+
+    @Override
+    public String getColumnName(int index) {
+        if (0 <= index && index < 9) {
+            return __colnames[index];
+        }
+        return null;
     }
 }

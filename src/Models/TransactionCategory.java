@@ -4,6 +4,8 @@ public class TransactionCategory implements IndexableClass {
     private long id;
     private String name;
 
+    private static final String [] __colnames = {"ID, Name"};
+
     public Object getValue(int index) {
         switch (index) {
             case 0: return id;
@@ -12,10 +14,9 @@ public class TransactionCategory implements IndexableClass {
         return null;
     }
 
-    public static String getColumnName(int col) {
-        switch (col) {
-            case 0: return "id";
-            case 1: return "name";
+    public String getColumnName(int col) {
+        if (0 <= col && col <= 1) {
+            return __colnames[col];
         }
         return null;
     }

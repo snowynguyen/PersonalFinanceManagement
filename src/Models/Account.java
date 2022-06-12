@@ -9,6 +9,9 @@ public class Account implements IndexableClass{
     private LocalDateTime last_update;
     private String note;
 
+    private static final String[] __colnames = {"ID", "Account Name", "Date Created", "Last Update", "Note"};
+
+
     public Object getValue(int index) {
         switch (index) {
             case 0: return id;
@@ -63,5 +66,13 @@ public class Account implements IndexableClass{
     public Account () {
         this.created = LocalDateTime.now();
         this.last_update = LocalDateTime.now();
+    }
+
+    @Override
+    public String getColumnName(int index) {
+        if (index >= 0 && index < 5) {
+            return __colnames[index];
+        }
+        return null;
     }
 }
